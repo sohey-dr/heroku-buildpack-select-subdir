@@ -5,7 +5,7 @@ set -e
 BUILD_DIR=${1:-}
 CACHE_DIR=${2:-}
 ENV_DIR=${3:-}
-BUILDPACK=$(cat $ENV_DIR/BUILDPACK)
+BUILDPACK2=$(cat $ENV_DIR/BUILDPACK2)
 
 function indent() {
   c='s/^/       /'
@@ -40,11 +40,11 @@ execute_buildpack_at_subdir() {
   subdir=""
   if [[ $buildpack == *'='* ]]; then
     subdir=$(echo $buildpack | cut -d"=" -f 1)
-    BUILDPACK=$(echo $buildpack | cut -d"=" -f 2)
+    BUILDPACK2=$(echo $buildpack | cut -d"=" -f 2)
   fi
 
-  url=${BUILDPACK%#*}
-  branch=${BUILDPACK#*#}
+  url=${BUILDPACK2%#*}
+  branch=${BUILDPACK2#*#}
 
   if [ "$branch" == "$url" ]; then
     branch=""
@@ -112,8 +112,8 @@ execute_buildpack_at_subdir() {
   fi
 }
 
-# BUILDPACK should be set as a Heroku config var
-execute_buildpack_at_subdir "$BUILDPACK"
+# BUILDPACK2 should be set as a Heroku config var
+execute_buildpack_at_subdir "$BUILDPACK2"
 
 if [[ -e $BUILD_DIR/last_pack_release.out ]]; then
   echo "Using release configuration from last framework ($framework)."
